@@ -71,7 +71,12 @@ public static void parseData(String firstList) {
 		String[] boats = secondSplit[0].split("\\|");
 		String[] people = secondSplit[1].split("\\|");
 		
+		//my aim here is to parse the master string into 3 sections. Marinas boats and people. By replacing characters i dont need and splitting i should be able to create 3 arrays containing the information i need with which
+		//to use complex for loops to create objects. one array would be used to create marina objects, another would be used to create boat objects and the final one would be used to create person/non uk person objects
+		//once this was completed I would be able to write a methoid to add people to boats and also assing roles, which would enable me to implement the constraints from stage 4
+		
 		System.out.println(Arrays.toString(marinas));
+		//System.out.println(marinas[0]);
 		
 		//System.out.println(Arrays.toString(marinas));
 		//System.out.println(Arrays.toString(boats));

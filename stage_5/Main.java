@@ -8,7 +8,9 @@ import java.util.Arrays;
 
 public class Main {
 
-	ArrayList<Person> pList = new ArrayList<Person>(); // creates an ArrayList of type Person called pList
+	static ArrayList<Marina> mList = new ArrayList<Marina>(); // creates an ArrayList of type Marina called mList
+	static ArrayList<Boat> bList = new ArrayList<Boat>(); // creates an ArrayList of type Boat called bList
+	static ArrayList<Person> pList = new ArrayList<Person>(); // creates an ArrayList of type Person called pList
 	static String fileName = "Stage_5_input.txt";
 
 	public static void main(String[] args) {
@@ -16,16 +18,13 @@ public class Main {
 		String mainList = (readData(fileName));
 		//System.out.println(mainList);
 		parseData(mainList);
+		System.out.println(mList);
+		System.out.println(bList);
+		System.out.println(pList);
 		
 
 	}
-
-	public void addPerson() {
-		for (Person p : pList) {
-			pList.add(p);
-		}
-	}
-
+	
 	// function to read data from file
 	@SuppressWarnings("resource")
 	public static String readData(String filePath) {
@@ -40,7 +39,7 @@ public class Main {
 											// instance
 			String line; // create a new String called 'line'
 			// ArrayList<String> list = new ArrayList<>();
-			String totalInput = ""; // creates a new String called 'totalInput' which is empty
+			String totalInput = "$"; // creates a new String called 'totalInput' which is empty
 
 			while ((line = br.readLine()) != null) { // start a while loop that will continue until there is not text left
 				totalInput += line + "-"; // updates the totalInput String to include the next line of text read in from the file and then start a new line
@@ -65,25 +64,60 @@ public class Main {
 	
 public static void parseData(String firstList) {
 		
-		String[] firstSplit = firstList.replace("-", "\n").replaceAll("Marinas", "").trim().split("Boats");//creates a string array with everything above boats in [0] and everything below boats in [1]
+		
+		String[] firstSplit = firstList.replace("-", "\n").replace("$Marinas", "").split("Boats");//creates a string array with everything above boats in [0] and everything below boats in [1]
 		String[] marinas = firstSplit[0].trim().split("\\|");
-		String[] secondSplit = firstSplit[1].split("People");
-		String[] boats = secondSplit[0].split("\\|");
-		String[] people = secondSplit[1].split("\\|");
-		
-		//my aim here is to parse the master string into 3 sections. Marinas boats and people. By replacing characters i dont need and splitting i should be able to create 3 arrays containing the information i need with which
-		//to use complex for loops to create objects. one array would be used to create marina objects, another would be used to create boat objects and the final one would be used to create person/non uk person objects
-		//once this was completed I would be able to write a methoid to add people to boats and also assing roles, which would enable me to implement the constraints from stage 4
-		
-		System.out.println(Arrays.toString(marinas));
-		//System.out.println(marinas[0]);
-		
 		//System.out.println(Arrays.toString(marinas));
+		
+		for (int i = 0; i < marinas.length; i++) {
+			String[] iList = marinas[i].trim().split("\n"); 
+			
+			int parsedSize = Integer.parseInt(iList[2]);
+			
+			mList.add(new Marina(iList[0], iList[1], parsedSize));
+		}
+		/*for (Marina m : mList) {
+			System.out.println( m.getName() + m.getAddress() + m.getSize());
+		}*/
+		
+		
+		String[] secondSplit = firstSplit[1].split("People");
+		String[] boats = secondSplit[0].trim().split("\\|");
 		//System.out.println(Arrays.toString(boats));
+		
+		for (int j = 0; j < boats.length; j++) {
+			String[] jList = boats[j].trim().split("\n"); 
+			
+			double parsedSize = Double.parseDouble(jList[2]);
+			
+			bList.add(new Boat(jList[0], jList[1], parsedSize));
+		}
+		/*for (Boat b: bList) {
+			System.out.println(b.getName() + b.getOrigin() + b.getSize());
+		}*/
+		
+		
+		
+		String[] people = secondSplit[1].trim().split("\\|");
 		//System.out.println(Arrays.toString(people));
+		
+		for (int k = 0; k < people.length; k++) {
+			String[] kList = people[k].trim().split("\n"); 
+			String[] name = kList[0].split(" ");
+			String fName = name[0];
+			String sName = name[1];
+			
+			if (kList.length <= 3){
+				pList.add(new Person(fName, sName, kList[1], kList[2]));
+			}
+			
+			else {
+				pList.add(new NonUK(fName, sName, kList[1], kList[2], kList[3]));
+			}
+		
 		}
 						
+	}
+
 }
-
-
 
